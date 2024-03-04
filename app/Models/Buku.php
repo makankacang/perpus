@@ -19,7 +19,16 @@ class Buku extends Model
 
     public function kategoris()
     {
-        return $this->belongsToMany(kategoribuku::class, 'kategoribuku_relasi', 'BukuID', 'KategoriID');
+        return $this->belongsToMany(Kategoribuku::class, 'kategoribuku_relasi', 'BukuID', 'KategoriID');
     }
 
+    public function peminjaman()
+    {
+        return $this->hasOne(Peminjaman::class, 'BukuID', 'BukuID');
+    }
+
+    public function koleksi()
+    {
+        return $this->hasMany(koleksipribadi::class, 'BukuID');
+    }
 }

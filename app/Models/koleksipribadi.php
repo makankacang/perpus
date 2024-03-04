@@ -13,4 +13,9 @@ class koleksipribadi extends Model
     protected $primaryKey = 'KoleksiID'; // Specify the primary key column
     public $timestamps = false;
     protected $guarded = ['created_at', 'updated_at'];
+
+    public function buku()
+    {
+        return $this->belongsTo(Buku::class, 'BukuID');
+    }
 }

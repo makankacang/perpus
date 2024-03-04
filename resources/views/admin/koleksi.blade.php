@@ -15,7 +15,6 @@
                                 <th scope="col">#</th>
                                 <th scope="col">UserID</th>
                                 <th scope="col">BukuID</th>
-                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,17 +25,6 @@
                                     @csrf
                                     <td>{{ $koleksi->UserID }}</td>
                                     <td>{{ $koleksi->BukuID }}</td>
-                                    <td>
-                                        <button type="submit" class="btn text-success save-btn" style="display: none;">
-                                            <i class="bi bi-check"></i>
-                                        </button>
-                                    </form>
-                                        <div class="btn-group" style="display: none;">
-                                            <p class="text-white mb-0">Are you sure?</p>
-                                            <a href="/koleksidelete/{{ $koleksi->KoleksiID }}" class="btn btn-danger confirm-delete-btn">Yes</a>
-                                            <button class="btn btn-outline-danger cancel-delete-btn">Cancel</button>
-                                        </div>                             
-                                    </td>
                                
                             </tr>
                             @endforeach

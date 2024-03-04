@@ -18,6 +18,7 @@
                                 <th scope="col">Penulis</th>
                                 <th scope="col">Penerbit</th>
                                 <th scope="col">Tahun Terbit</th>
+                                <th scope="col">Kategori</th>
                                 <th scope="col">Image</th> <!-- Add the image column header -->
                                 <th scope="col">Action</th>
                             </tr>
@@ -44,13 +45,18 @@
                                         <span class="table-data">{{ $buku->TahunTerbit }}</span>
                                         <input type="number" name="TahunTerbit" class="form-control edit-input" value="{{ $buku->TahunTerbit }}" style="display: none;">
                                     </td>
+                                    <td style="width: 20%">
+                                        @foreach($buku->kategoris as $kategori)
+                                            <span class="table-data">{{ $kategori->NamaKategori }}</span>
+                                        @endforeach
+                                    </td>                                    
                                     <td style="width: 10%">
                                         <div style="position: relative;">
                                             <label for="imageInput{{ $buku->BukuID }}" class="btn btn-primary" style="pointer-events: none;">
                                                 <img id="imagePreview{{ $buku->BukuID }}" src="{{ asset('storage/images/' . $buku->image) }}" alt="Book Image" style="max-width: 50px;">
                                             </label>
                                             <input id="imageInput{{ $buku->BukuID }}" type="file" name="image" class="form-control edit-input" data-original-src="{{ asset('storage/images/' . $buku->image) }}" style="display: none;">
-                                            <button type="button" class="btn text-white" onclick="showFullImage('{{ $buku->BukuID }}')" style="position: absolute; bottom: 0; right: 0;"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn text-white" onclick="showFullImage('{{ $buku->BukuID }}')" style="position: absolute; bottom: 50; right: 0;"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
                                         </div>
                                     </td>
                                                                       
@@ -77,7 +83,16 @@
                                     </td>
 
                             </tr>
-                                                       
+                                           
+                            <!-- Image Modal -->
+                            <div id="imageModal{{ $buku->BukuID }}" class="modal fade" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content bg-transparent border-0">
+                                        <img id="fullImage{{ $buku->BukuID }}" src="{{ asset('storage/images/' . $buku->image) }}" alt="Full Book Image">
+                                    </div>
+                                </div>
+                            </div>
+                                        
                             @endforeach
                         </tbody>
                     </table>
@@ -87,16 +102,6 @@
         </div>
     </div>
 </div>
-
-<!-- Image Modal -->
-<div id="imageModal{{ $buku->BukuID }}" class="modal fade" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content bg-transparent border-0">
-            <img id="fullImage{{ $buku->BukuID }}" src="{{ asset('storage/images/' . $buku->image) }}" alt="Full Book Image">
-        </div>
-    </div>
-</div>
-
 
 
 <!-- Add Buku Modal -->
@@ -111,33 +116,87 @@
                 <!-- Add Buku Form -->
                 <form action="/bukuinput" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="mb-3">
-                        <label for="judul" class="form-label">Judul</label>
-                        <input type="text" class="form-control" id="judul" name="Judul" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="penulis" class="form-label">Penulis</label>
-                        <input type="text" class="form-control" id="penulis" name="Penulis" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="penerbit" class="form-label">Penerbit</label>
-                        <input type="text" class="form-control" id="penerbit" name="Penerbit" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
-                        <input type="number" class="form-control" id="tahun_terbit" name="TahunTerbit" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Image</label>
-                        <div class="input-group">
-                            <input type="file" class="form-control bg-dark btn-primary text-light" id="imageAdd" name="image" onchange="previewImageAdd(event)">
-                            <img id="imagePreviewAdd" src="#" alt="Image Preview" style="max-width: 100px; max-height: 100px; margin-left: 10px; display: none;">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="judul" class="form-label">Judul</label>
+                            <input type="text" class="form-control" id="judul" name="Judul" required>
+                        </div>
+                        <div class="col">
+                            <label for="penulis" class="form-label">Penulis</label>
+                            <input type="text" class="form-control" id="penulis" name="Penulis" required>
                         </div>
                     </div>
-                    <div class="mb-3 text-end">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="penerbit" class="form-label">Penerbit</label>
+                            <input type="text" class="form-control" id="penerbit" name="Penerbit" required>
+                        </div>
+                        <div class="col">
+                            <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
+                            <input type="number" class="form-control" id="tahun_terbit" name="TahunTerbit" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="kategori" class="form-label">Kategori</label>
+                            <p id="kategori_name" class="form-control-static"></p>
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-dark text-light" id="KategoriID" name="KategoriID" readonly>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kategoriModal">Select Category</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="image" class="form-label">Image</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control bg-dark btn-primary text-light" id="imageAdd" name="image" onchange="previewImageAdd(event)">
+                                <img id="imagePreviewAdd" src="#" alt="Image Preview" style="max-width: 100px; max-height: 100px; margin-left: 10px; display: none;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3 text-end">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Category Modal -->
+<div class="modal fade" id="kategoriModal" tabindex="-1" aria-labelledby="kategoriModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-secondary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="kategoriModalLabel">Select Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Display category table here -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">KategoriID</th>
+                            <th scope="col">Nama Kategori</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($categories as $category)
+                        <tr>
+                            <td>{{ $category->KategoriID }}</td>
+                            <td>{{ $category->NamaKategori }}</td>
+                            <!-- Button to select category -->
+                            <td><button type="button" class="btn btn-primary">Select</button></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -263,6 +322,24 @@ document.querySelectorAll('.cancel-btn').forEach((button) => {
         $('#imageModal' + bukuID).modal('show');
     }
 
+        // JavaScript code to handle category selection
+        document.addEventListener('DOMContentLoaded', function () {
+        // Add click event listener to each 'Select' button in the category modal
+        document.querySelectorAll('.modal#kategoriModal button.btn-primary').forEach(function (button) {
+            button.addEventListener('click', function () {
+                // Get the selected category ID and name
+                var categoryID = this.closest('tr').querySelector('td:first-child').innerText;
+                var categoryName = this.closest('tr').querySelector('td:nth-child(2)').innerText;
+
+                // Set the selected category ID and name in the addBukuModal
+                document.querySelector('#addBukuModal input#KategoriID').value = categoryID;
+                document.querySelector('#addBukuModal p#kategori_name').innerText = categoryName;
+
+                // Close the category modal
+                $('#kategoriModal').modal('hide');
+            });
+        });
+    });
 </script>
 
 

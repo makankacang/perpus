@@ -3,7 +3,7 @@
 @section('content')
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">Shop</h1>
+            <h1 class="text-center text-white display-6">Perpustakaan</h1>
             <ol class="breadcrumb justify-content-center mb-0">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item"><a href="#">Pages</a></li>
@@ -188,12 +188,20 @@
                                                     @foreach($buku->kategoris as $kategori)
                                                         {{ $kategori->NamaKategori }}
                                                     @endforeach
+                                                    <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary m-1" onclick="addToCollection('{{ $buku->BukuID }}')">
+                                                        <i class="fa fa-star me-2 text-primary"></i> Koleksi
+                                                    </button>     
                                                 </div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                     <h4>{{ $buku->Judul }}</h4>
                                                     <p>{{ $buku->Penulis }}</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                                    <div class="d-flex justify-content-center flex-lg-wrap">
+                                                        <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary m-1" onclick="showBorrowConfirmation('{{ $buku->BukuID }}', '{{ $buku->Judul }}', '{{ $buku->kategoris->implode('NamaKategori', ', ') }}')">
+                                                            <i class="fa fa-plus me-2 text-primary"></i> Pinjam buku
+                                                        </button>                                                        
+                                                        <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary m-1">
+                                                            <i class="fa fa-pencil-square me-2 text-primary"></i> Ulasan
+                                                        </button>                                                                                                             
                                                     </div>
                                                 </div>
                                             </div>
@@ -213,11 +221,176 @@
                                     </div>
                                 </div>      
                             </div>   
-                                               
+                              
+                                <!-- Modal for Borrow Confirmation -->
+                                <div class="modal fade" id="borrowConfirmationModal" tabindex="-1" aria-labelledby="borrowConfirmationModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="borrowConfirmationModalLabel">Borrow Confirmation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h6>Borrow Details:</h6>
+                                                <p>Buku Name: <span id="bukuName"></span></p>
+                                                <p>Kategori: <span id="kategori"></span></p>
+                                                <p>Tanggal Peminjaman: {{ now()->format('Y-m-d') }}</p>
+                                                <form id="borrowForm" action="{{ route('borrow.store') }}" method="POST">
+                                                    @csrf
+                                                    <div class="mb-3">
+                                                        <label for="tanggalPengembalian" class="form-label">Tanggal Pengembalian:</label>
+                                                        <input type="date" class="form-control" id="tanggalPengembalian" name="tanggalPengembalian" required min="{{ now()->format('Y-m-d') }}">
+                                                    </div>                                                    
+                                                    <input type="hidden" id="bukuID" name="bukuID">
+                                                    <input type="hidden" id="userID" name="userID" value="{{ Auth::user()->id }}">
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Confirm Borrow</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Fruits Shop End-->
+
+        <script>
+            function showBorrowConfirmation(bukuID, bukuName, kategori) {
+                document.getElementById('bukuID').value = bukuID;
+                document.getElementById('bukuName').textContent = bukuName;
+                document.getElementById('kategori').textContent = kategori;
+                $('#borrowConfirmationModal').modal('show');
+            }
+        
+            $(document).ready(function() {
+                $('#borrowForm').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var url = form.attr('action');
+                    var formData = form.serialize();
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: formData,
+                        success: function(response) {
+                            // Show success toast
+                            showToast('Buku berhasil dipinjam');
+                            // Reset the form
+                            form.trigger('reset');
+                            // Close the modal
+                            $('#borrowConfirmationModal').modal('hide');
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                });
+            });
+        
+            // Function to show a custom toast notification
+            function showToast(message) {
+                const toastContainer = document.querySelector('.container-fluid'); // Select the container element where you want to append the toast
+                const toast = document.createElement('div');
+                toast.classList.add('toast');
+                toast.classList.add('show');
+                toast.classList.add('position-fixed');
+                toast.classList.add('top-1');
+                toast.classList.add('end-0');
+                toast.classList.add('m-4');
+                toast.style.opacity = '0'; // Start with opacity 0
+                toast.style.transform = 'scale(0.8)'; // Start with a smaller scale
+                toast.setAttribute('role', 'alert');
+                toast.setAttribute('aria-live', 'assertive');
+                toast.setAttribute('aria-atomic', 'true');
+        
+                const toastBody = document.createElement('div');
+                toastBody.classList.add('toast-body');
+                toastBody.innerText = message;
+        
+                toast.appendChild(toastBody);
+                toastContainer.appendChild(toast);
+        
+                // Animate the toast
+                setTimeout(() => {
+                    toast.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out'; // Add transition for opacity and transform
+                    toast.style.opacity = '1'; // Fade in
+                    toast.style.transform = 'scale(1)'; // Scale up
+                    setTimeout(() => {
+                        toast.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out'; // Add transition for opacity and transform
+                        toast.style.opacity = '0'; // Fade out
+                        toast.style.transform = 'scale(0.8)'; // Scale down
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 300); // Remove the toast after animation completes
+                    }, 3000); // Display the toast for 3 seconds
+                }, 100); // Delay the animation to ensure it starts properly
+            }
+
+            function addToCollection(bukuID) {
+    $.ajax({
+        type: 'POST',
+        url: '{{ route('add-to-collection') }}',
+        data: {
+            bukuID: bukuID,
+            _token: '{{ csrf_token() }}',
+        },
+        success: function(response) {
+            // Show success toast
+            showToast('Buku berhasil ditambahkan ke koleksi');
+        },
+        error: function(xhr, status, error) {
+            // Handle errors
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+// Function to show a custom toast notification
+function showToast(message) {
+    const toastContainer = document.querySelector('.container-fluid'); // Select the container element where you want to append the toast
+    const toast = document.createElement('div');
+    toast.classList.add('toast');
+    toast.classList.add('show');
+    toast.classList.add('position-fixed');
+    toast.classList.add('top-1');
+    toast.classList.add('end-0');
+    toast.classList.add('m-4');
+    toast.style.opacity = '0'; // Start with opacity 0
+    toast.style.transform = 'scale(0.8)'; // Start with a smaller scale
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+
+    const toastBody = document.createElement('div');
+    toastBody.classList.add('toast-body');
+    toastBody.innerText = message;
+
+    toast.appendChild(toastBody);
+    toastContainer.appendChild(toast);
+
+    // Animate the toast
+    setTimeout(() => {
+        toast.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out'; // Add transition for opacity and transform
+        toast.style.opacity = '1'; // Fade in
+        toast.style.transform = 'scale(1)'; // Scale up
+        setTimeout(() => {
+            toast.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out'; // Add transition for opacity and transform
+            toast.style.opacity = '0'; // Fade out
+            toast.style.transform = 'scale(0.8)'; // Scale down
+            setTimeout(() => {
+                toast.remove();
+            }, 300); // Remove the toast after animation completes
+        }, 3000); // Display the toast for 3 seconds
+    }, 100); // Delay the animation to ensure it starts properly
+}
+
+        </script>
+        
+
 @endsection

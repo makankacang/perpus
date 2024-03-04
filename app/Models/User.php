@@ -42,4 +42,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function peminjaman()
+    {
+        $peminjamans = Peminjaman::with('user')->get();
+        
+        return view('admin.pinjaman', ['peminjamans' => $peminjamans]);
+    }
+
 }

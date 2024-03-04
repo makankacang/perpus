@@ -58,8 +58,8 @@
                     <a href="/" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <a href="/buku" class="nav-item nav-link {{ Request::is('buku') ? 'active' : '' }}"><i class="fa fa-book me-2"></i>Buku</a>
                     <a href="/kategori" class="nav-item nav-link {{ Request::is('kategori') ? 'active' : '' }}"><i class="fa fa-table me-2"></i>Kategori Buku</a>
-                    <a href="/koleksi" class="nav-item nav-link {{ Request::is('koleksi') ? 'active' : '' }}"><i class="fa fa-address-book me-2"></i>Koleksi</a>
-                    <a href="/pinjam" class="nav-item nav-link {{ Request::is('pinjam') ? 'active' : '' }}"><i class="fa fa-handshake me-2"></i>Peminjaman</a>
+                    <a href="/koleksis" class="nav-item nav-link {{ Request::is('koleksis') ? 'active' : '' }}"><i class="fa fa-address-book me-2"></i>Koleksi</a>
+                    <a href="/peminjaman" class="nav-item nav-link {{ Request::is('peminjaman') ? 'active' : '' }}"><i class="fa fa-handshake me-2"></i>Peminjaman</a>
                     <a href="/ulasan" class="nav-item nav-link {{ Request::is('ulasan') ? 'active' : '' }}"><i class="fa fa-star me-2"></i>Ulasan Buku</a>
                     <a href="/user" class="nav-item nav-link {{ Request::is('user') ? 'active' : '' }}"><i class="fa fa-user me-2"></i>User</a>
                 </div>

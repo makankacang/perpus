@@ -22,7 +22,9 @@
 
         <!-- Icon Font Stylesheet -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
         <!-- Libraries Stylesheet -->
         <link href="../fruitables/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
@@ -68,22 +70,19 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
-                            <a href="/perpustakaan" class="nav-item nav-link">Perpustakaan</a>
+                            <a href="/home" class="nav-item nav-link {{ request()->routeIs('homep') ? 'active' : '' }}">Home</a>
+                            <a href="/perpustakaan" class="nav-item nav-link {{ request()->routeIs('peminjam.perpus') ? 'active' : '' }}">Perpustakaan</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Me</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.html" class="dropdown-item">Koleksi Saya</a>
-                                    <a href="chackout.html" class="dropdown-item">Ulasan Saya</a>
+                                    <a href="{{ route('peminjam.pinjaman') }}" class="dropdown-item {{ request()->routeIs('peminjam.pinjaman') ? 'active' : '' }}">Pinjaman</a>
+                                    <a href="{{ route('peminjam.koleksi') }}" class="dropdown-item">Koleksi Saya</a>
+                                    <a href="" class="dropdown-item">Ulasan Saya</a>
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-                            </a>
                             <a href="#" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
