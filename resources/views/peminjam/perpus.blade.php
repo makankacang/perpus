@@ -5,9 +5,8 @@
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6">Perpustakaan</h1>
             <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                <li class="breadcrumb-item active text-white">Shop</li>
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active text-white">Perpustakaan</li>
             </ol>
         </div>
         <!-- Single Page Header End -->
@@ -16,7 +15,7 @@
         <!-- Fruits Shop Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
-                <h1 class="mb-4">Fresh fruits shop</h1>
+                <h1 class="mb-4">Koleksi Buku</h1>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="row g-4">
@@ -179,6 +178,9 @@
                             <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center">
                                     @foreach($bukus as $buku)
+                                        @php
+                                        $isInCollection = in_array($buku->BukuID, $userCollections);
+                                        @endphp
                                         <div class="col-md-6 col-lg-6 col-xl-4">
                                             <div class="rounded position-relative fruite-item">
                                                 <div class="fruite-img">
@@ -187,21 +189,32 @@
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
                                                     @foreach($buku->kategoris as $kategori)
                                                         {{ $kategori->NamaKategori }}
-                                                    @endforeach
-                                                    <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary m-1" onclick="addToCollection('{{ $buku->BukuID }}')">
-                                                        <i class="fa fa-star me-2 text-primary"></i> Koleksi
-                                                    </button>     
+                                                    @endforeach     
+                                                </div>
+                                                <div class="text-white px-3 py-1 position-absolute" style="top: 3px; left: 180px;">
+
+                                                    <button type="button" class="btn bg-secondary border border-secondary rounded-pill px-3 text-primary m-1" data-buku-id="{{ $buku->BukuID }}" onclick="toggleCollection('{{ $buku->BukuID }}', {{ $isInCollection ? 'true' : 'false' }})">
+                                                        @if($isInCollection)
+                                                            <i class="fa fa-check"></i>
+                                                        @else
+                                                            <i class="fa fa-star"></i>
+                                                        @endif
+                                                    </button>
+                                                    
+
                                                 </div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                     <h4>{{ $buku->Judul }}</h4>
                                                     <p>{{ $buku->Penulis }}</p>
                                                     <div class="d-flex justify-content-center flex-lg-wrap">
-                                                        <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary m-1" onclick="showBorrowConfirmation('{{ $buku->BukuID }}', '{{ $buku->Judul }}', '{{ $buku->kategoris->implode('NamaKategori', ', ') }}')">
-                                                            <i class="fa fa-plus me-2 text-primary"></i> Pinjam buku
-                                                        </button>                                                        
-                                                        <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary m-1">
-                                                            <i class="fa fa-pencil-square me-2 text-primary"></i> Ulasan
-                                                        </button>                                                                                                             
+                                                        <div class="btn-group" role="group">
+                                                            <button type="button" class="btn btn-sm border border-secondary rounded-pill px-3 text-primary m-1" onclick="showBorrowConfirmation('{{ $buku->BukuID }}', '{{ $buku->Judul }}', '{{ $buku->kategoris->implode('NamaKategori', ', ') }}')">
+                                                                <i class="fa fa-plus"></i> Pinjam
+                                                            </button>
+                                                            <button type="button" class="btn btn-sm border border-secondary rounded-pill px-3 text-primary m-1" onclick="showReviewForm('{{ $buku->BukuID }}', '{{ $buku->Judul }}')">
+                                                                <i class="far fa-comment"></i> Ulasan
+                                                            </button>
+                                                        </div>                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -227,11 +240,11 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="borrowConfirmationModalLabel">Borrow Confirmation</h5>
+                                                <h5 class="modal-title" id="borrowConfirmationModalLabel">Konfirmasi Pinjaman</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <h6>Borrow Details:</h6>
+                                                <h6>Detail :</h6>
                                                 <p>Buku Name: <span id="bukuName"></span></p>
                                                 <p>Kategori: <span id="kategori"></span></p>
                                                 <p>Tanggal Peminjaman: {{ now()->format('Y-m-d') }}</p>
@@ -332,17 +345,31 @@
                 }, 100); // Delay the animation to ensure it starts properly
             }
 
-            function addToCollection(bukuID) {
+function toggleCollection(bukuID) {
+    // Check if the button has the 'btn-primary' class
+    var isInCollection = $('#collectionButton-' + bukuID).hasClass('btn-primary');
+
+    // Determine the action based on the current state
+    var action = isInCollection ? 'remove' : 'add';
+
     $.ajax({
         type: 'POST',
-        url: '{{ route('add-to-collection') }}',
+        url: '{{ route('toggle-collection') }}',
         data: {
             bukuID: bukuID,
+            action: action,
             _token: '{{ csrf_token() }}',
         },
         success: function(response) {
             // Show success toast
-            showToast('Buku berhasil ditambahkan ke koleksi');
+            showToast('Buku berhasil ' + (action === 'add' ? 'ditambahkan ke koleksi' : 'dihapus dari koleksi'));
+
+            // Toggle the button state
+            if (action === 'add') {
+                $('#collectionButton-' + bukuID).addClass('btn-primary').removeClass('btn-secondary').html('<i class="fa fa-star"></i> Koleksi');
+            } else {
+                $('#collectionButton-' + bukuID).removeClass('btn-primary').addClass('btn-secondary').html('<i class="fa fa-check"></i> Tambahkan ke Koleksi');
+            }
         },
         error: function(xhr, status, error) {
             // Handle errors
@@ -350,6 +377,8 @@
         }
     });
 }
+
+
 
 // Function to show a custom toast notification
 function showToast(message) {

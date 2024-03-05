@@ -3,11 +3,10 @@
 @section('content')
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
-    <h1 class="text-center text-white display-6">Cart</h1>
+    <h1 class="text-center text-white display-6">Pinjaman saya</h1>
     <ol class="breadcrumb justify-content-center mb-0">
         <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-        <li class="breadcrumb-item active text-white">Cart</li>
+        <li class="breadcrumb-item active text-white">Pinjaman saya</li>
     </ol>
 </div>
 <!-- Single Page Header End -->
@@ -21,8 +20,8 @@
                 <thead>
                     <tr>
                         <th scope="col">Peminjaman ID</th>
-                        <th scope="col">User ID</th>
-                        <th scope="col">Buku ID</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Judul</th>
                         <th scope="col">Tanggal Peminjaman</th>
                         <th scope="col">Tanggal Pengembalian</th>
                         <th scope="col">Status Peminjaman</th>
@@ -32,8 +31,8 @@
                     @foreach($peminjamans as $peminjaman)
                     <tr>
                         <td>{{ $peminjaman->PeminjamanID }}</td>
-                        <td>{{ $peminjaman->UserID }}</td>
-                        <td>{{ $peminjaman->BukuID }}</td>
+                        <td>{{ $peminjaman->user->name }}</td>
+                        <td>{{ $peminjaman->buku->Judul }}</td>
                         <td>{{ $peminjaman->TanggalPeminjaman }}</td>
                         <td>{{ $peminjaman->TanggalPengembalian }}</td>
                         <td>

@@ -55,22 +55,27 @@ class PerpusController extends Controller
     }
 
 
-
-    public function addToCollection(Request $request)
+    public function toggleCollection(Request $request)
     {
-        // Validate the request if needed
-        
-        // Create the koleksipribadi entry
-        Koleksipribadi::create([
-            'UserID' => auth()->user()->id,
-            'BukuID' => $request->bukuID,
-        ]);
-        
+        // Retrieve the book ID and action from the request
+        $bukuID = $request->input('bukuID');
+        $action = $request->input('action');
+
+        // Check if the action is 'add' or 'remove'
+        if ($action === 'add') {
+            // Add the book to the collection
+            KoleksiPribadi::create([
+                'UserID' => auth()->user()->id,
+                'BukuID' => $bukuID,
+            ]);
+        } elseif ($action === 'remove') {
+            // Remove the book from the collection
+            KoleksiPribadi::where('BukuID', $bukuID)->delete();
+        }
+
         // You can return a response if needed
-        return response()->json(['message' => 'Added to collection successfully']);
+        return response()->json(['success' => true]);
     }
-
-
 
 
     public function buku()
@@ -270,11 +275,15 @@ public function deleteKoleksi($id)
 
 
 
+
     public function perpustakaan()
     {
         $bukus = Buku::all();
-        return view('peminjam.perpus', ['bukus' => $bukus]);
+        $userCollections = KoleksiPribadi::where('UserID', auth()->user()->id)->pluck('BukuID')->toArray();
+        return view('peminjam.perpus', ['bukus' => $bukus, 'userCollections' => $userCollections]);
     }
+
+
 
 
 

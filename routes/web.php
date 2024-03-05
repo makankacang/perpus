@@ -38,5 +38,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/koleksi',  [PerpusController::class, 'koleksip'])->name('peminjam.koleksi');
     Route::post('/kembalikan-buku/{id}', [PerpusController::class, 'kembalikanBuku'])->name('kembalikanBuku');
     Route::post('/add-to-collection', [PerpusController::class, 'addToCollection'])->name('add-to-collection');
+    Route::post('/toggle-collection', [PerpusController::class, 'toggleCollection'])->name('toggle-collection');
+
 
 });
