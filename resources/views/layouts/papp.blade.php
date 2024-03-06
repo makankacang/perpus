@@ -20,6 +20,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+        <!-- Include RateYo library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 
         <!-- Libraries Stylesheet -->
         <link href="../fruitables/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
@@ -52,8 +55,7 @@
                     </div>
                     <div class="top-link pe-2">
                         <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
+                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small></a>
                     </div>
                 </div>
             </div>
@@ -72,15 +74,11 @@
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="{{ route('peminjam.pinjaman') }}" class="dropdown-item {{ request()->routeIs('peminjam.pinjaman') ? 'active' : '' }}">Pinjaman</a>
                                     <a href="{{ route('peminjam.koleksi') }}" class="dropdown-item">Koleksi Saya</a>
-                                    <a href="" class="dropdown-item">Ulasan Saya</a>
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
+                            <button class="btn-search btn border border-secondary rounded-pill bg-white me-4" data-bs-toggle="modal" data-bs-target="#logoutConfirmationModal"><i class="fas fa-logout text-primary"></i> Log Out</button>
                         </div>
                     </div>
                 </nav>
@@ -108,7 +106,21 @@
         </div>
         <!-- Modal Search End -->
         @endauth
-
+                            <!-- Logout Confirmation Modal -->
+                            <div class="modal fade" id="logoutConfirmationModal" tabindex="-1" aria-labelledby="logoutConfirmationModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            Are you sure you want to logout?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                                            <a href="{{ route('logout') }}" class="btn btn-primary">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Logout Confirmation Modal -->
         
         <div class="main">
             <div class="content">
@@ -210,6 +222,13 @@
             <!-- Back to Top -->
             <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
             </div>
+        </div>
+    </div>
+
+
+    </div>
+
+    <!-- Include RateYo library -->
                 <!-- JavaScript Libraries -->
                 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -223,10 +242,8 @@
 
                 <!-- Template Javascript -->
                 <script src="../fruitables/js/main.js"></script>
-        </div>
-    </div>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 
-
-    </div>
 </body>
 </html>

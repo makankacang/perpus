@@ -31,6 +31,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/peminjaman',  [PerpusController::class, 'peminjaman'])->name('admin.pinjaman');
     Route::post('/konfirmasi-peminjaman/{id}', [PerpusController::class, 'konfirmasiPeminjaman'])->name('konfirmasiPeminjaman');
+    Route::delete('/peminjaman/{id}', [PerpusController::class, 'cancelPeminjaman'])->name('peminjaman.cancel');
+    Route::post('/generate-report', [PerpusController::class, 'generate'])->name('generate.report');
+    Route::get('/ulasan', [PerpusController::class, 'ulasanadmin'])->name('ulasanadmin');
+    Route::delete('/ulasanBuku/delete/{id}', [PerpusController::class, 'ulasandelete'])->name('ulasanBuku.delete');
+    Route::get('/user', [PerpusController::class, 'showUsers'])->name('users.show');
+    Route::get('/users/change-level/{id}/{level}', [PerpusController::class, 'changeLevel'])->name('user.changeLevel');
+
+
+
+
+
 
     Route::get('/home', [PerpusController::class, 'indexp'])->name('homep');
     Route::get('/perpustakaan', [PerpusController::class, 'perpustakaan'])->name('peminjam.perpus');
@@ -38,7 +49,23 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/koleksi',  [PerpusController::class, 'koleksip'])->name('peminjam.koleksi');
     Route::post('/kembalikan-buku/{id}', [PerpusController::class, 'kembalikanBuku'])->name('kembalikanBuku');
     Route::post('/add-to-collection', [PerpusController::class, 'addToCollection'])->name('add-to-collection');
-    Route::post('/toggle-collection', [PerpusController::class, 'toggleCollection'])->name('toggle-collection');
+    Route::post('/remove-from-collection', [PerpusController::class, 'removeFromCollection'])->name('remove-from-collection');
+    Route::post('/remove-from-collections', [PerpusController::class, 'removeFromCollections'])->name('remove-from-collections');
+    Route::post('/cancel-borrow', [PerpusController::class, 'cancelBorrow'])->name('cancel.borrow');
+    Route::post('/reviews/store', [PerpusController::class, 'review'])->name('review.store');
+    Route::get('/review/check/{bukuID}', [PerpusController::class, 'checkReview'])->name('review.check');
+    Route::get('/review/edit', [PerpusController::class, 'editreview'])->name('review.edit');
+    Route::put('/review/update', [PerpusController::class, 'updatereview'])->name('review.update');
+    Route::get('/get-review', [PerpusController::class, 'getReview'])->name('get-review');
+    Route::post('/store-review', [PerpusController::class, 'storeReview'])->name('store-review');
+    Route::get('/review/other', [PerpusController::class, 'fetchOtherReviews'])->name('review.other');
+
+
+
+
+
+
+
 
 
 });

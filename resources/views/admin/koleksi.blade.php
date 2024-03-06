@@ -13,8 +13,9 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">UserID</th>
-                                <th scope="col">BukuID</th>
+                                <th scope="col">Peminjam</th>
+                                <th scope="col">Buku</th>
+                                <th scope="col">Kategori</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,7 +25,12 @@
                                 <form action="/koleksiPribadi/edit/{{ $koleksi->KoleksiID }}" method="POST">
                                     @csrf
                                     <td>{{ $koleksi->UserID }}</td>
-                                    <td>{{ $koleksi->BukuID }}</td>
+                                    <td>{{ $koleksi->buku->Judul }}</td>
+                                    <td>
+                                    @foreach( $koleksi->buku->kategoris as $kategori)
+                                        <span class="table-data">{{ $kategori->NamaKategori }}</span>
+                                    @endforeach    
+                                    </td>
                                
                             </tr>
                             @endforeach

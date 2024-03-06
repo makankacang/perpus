@@ -15,27 +15,26 @@
         <!-- Fruits Shop Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
-                <h1 class="mb-4">Koleksi Buku</h1>
+                <h1 class="mb-4">Buku</h1>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="row g-4">
                             <div class="col-xl-3">
                                 <div class="input-group w-100 mx-auto d-flex">
-                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                                    <input type="search" class="form-control p-3" id="searchInput" placeholder="keywords" aria-describedby="search-icon-1">
                                     <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                                 </div>
                             </div>
                             <div class="col-6"></div>
                             <div class="col-xl-3">
                                 <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="fruits">Default Sorting:</label>
-                                    <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
-                                        <option value="volvo">Nothing</option>
-                                        <option value="saab">Popularity</option>
-                                        <option value="opel">Organic</option>
-                                        <option value="audi">Fantastic</option>
+                                    <label for="sort">Default Sorting:</label>
+                                    <select id="sort" name="sorting" class="border-0 form-select-sm bg-light me-3">
+                                        <option value="title-asc">Title (A-Z)</option>
+                                        <option value="title-desc">Title (Z-A)</option>
                                     </select>
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="row g-4">
@@ -45,142 +44,41 @@
                                         <div class="mb-3">
                                             <h4>Categories</h4>
                                             <ul class="list-unstyled fruite-categorie">
+                                                @foreach($categories as $category)
                                                 <li>
                                                     <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
-                                                        <span>(3)</span>
+                                                        <a href="{{ route('peminjam.perpus', ['kategori' => $category->KategoriID]) }}">
+                                                            <i class="fas fa-apple-alt me-2"></i>{{ $category->NamaKategori }}
+                                                        </a>
+                                                        <span>({{ $category->bukus->count() }})</span>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
-                                                        <span>(5)</span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
-                                                        <span>(2)</span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Banana</a>
-                                                        <span>(8)</span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
-                                                        <span>(5)</span>
-                                                    </div>
-                                                </li>
+                                                @endforeach
                                             </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4 class="mb-2">Price</h4>
-                                            <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="500" value="0" oninput="amount.value=rangeInput.value">
-                                            <output id="amount" name="amount" min-velue="0" max-value="500" for="rangeInput">0</output>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4>Additional</h4>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-1" name="Categories-1" value="Beverages">
-                                                <label for="Categories-1"> Organic</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-2" name="Categories-1" value="Beverages">
-                                                <label for="Categories-2"> Fresh</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-3" name="Categories-1" value="Beverages">
-                                                <label for="Categories-3"> Sales</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-4" name="Categories-1" value="Beverages">
-                                                <label for="Categories-4"> Discount</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-5" name="Categories-1" value="Beverages">
-                                                <label for="Categories-5"> Expired</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <h4 class="mb-3">Featured products</h4>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="img/featur-1.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="img/featur-2.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="img/featur-3.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-center my-4">
-                                            <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center">
                                     @foreach($bukus as $buku)
-                                        @php
-                                        $isInCollection = in_array($buku->BukuID, $userCollections);
-                                        @endphp
+                                    @php
+                                    $isBorrowed = \App\Models\Peminjaman::where('BukuID', $buku->BukuID)
+                                                    ->where('UserID', Auth::user()->id)
+                                                    ->whereIn('StatusPeminjaman', ['konfirmasi', 'dipinjam'])
+                                                    ->exists();
+                                    $isBorroweds = \App\Models\Peminjaman::where('BukuID', $buku->BukuID)
+                                                    ->where('UserID', Auth::user()->id)
+                                                    ->whereIn('StatusPeminjaman', ['dipinjam', 'dikembalikan'])
+                                                    ->exists();
+                                    $isInCollection = in_array($buku->BukuID, $userCollections);
+                            
+                                    // Check if the user has provided a review for this book
+                                    $userReview = \App\Models\UlasanBuku::where('BukuID', $buku->BukuID)
+                                                    ->where('UserID', Auth::user()->id)
+                                                    ->first();
+                                    @endphp
                                         <div class="col-md-6 col-lg-6 col-xl-4">
                                             <div class="rounded position-relative fruite-item">
                                                 <div class="fruite-img">
@@ -192,28 +90,43 @@
                                                     @endforeach     
                                                 </div>
                                                 <div class="text-white px-3 py-1 position-absolute" style="top: 3px; left: 180px;">
-
-                                                    <button type="button" class="btn bg-secondary border border-secondary rounded-pill px-3 text-primary m-1" data-buku-id="{{ $buku->BukuID }}" onclick="toggleCollection('{{ $buku->BukuID }}', {{ $isInCollection ? 'true' : 'false' }})">
-                                                        @if($isInCollection)
+                                                    @if($isInCollection)
+                                                        <button id="addToCollectionBtn_{{ $buku->BukuID }}" type="button" class="btn bg-secondary border border-secondary rounded-pill px-3 text-primary m-1" onclick="removeFromCollection('{{ $buku->BukuID }}')">
                                                             <i class="fa fa-check"></i>
-                                                        @else
-                                                            <i class="fa fa-star"></i>
-                                                        @endif
-                                                    </button>
-                                                    
-
+                                                        </button>
+                                                    @else
+                                                            <button id="addToCollectionBtn_{{ $buku->BukuID }}" type="button" class="btn bg-secondary border border-secondary rounded-pill px-3 text-primary m-1" onclick="addToCollection('{{ $buku->BukuID }}')">
+                                                                <i class="fa fa-star"></i>
+                                                            </button>
+                                                    @endif
                                                 </div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                     <h4>{{ $buku->Judul }}</h4>
                                                     <p>{{ $buku->Penulis }}</p>
                                                     <div class="d-flex justify-content-center flex-lg-wrap">
                                                         <div class="btn-group" role="group">
-                                                            <button type="button" class="btn btn-sm border border-secondary rounded-pill px-3 text-primary m-1" onclick="showBorrowConfirmation('{{ $buku->BukuID }}', '{{ $buku->Judul }}', '{{ $buku->kategoris->implode('NamaKategori', ', ') }}')">
-                                                                <i class="fa fa-plus"></i> Pinjam
-                                                            </button>
-                                                            <button type="button" class="btn btn-sm border border-secondary rounded-pill px-3 text-primary m-1" onclick="showReviewForm('{{ $buku->BukuID }}', '{{ $buku->Judul }}')">
-                                                                <i class="far fa-comment"></i> Ulasan
-                                                            </button>
+                                                            @if(!$isBorrowed)
+                                                                <button type="button" class="btn btn-md border border-secondary rounded-pill px-3 text-primary m-1" onclick="showBorrowConfirmation('{{ $buku->BukuID }}', '{{ $buku->Judul }}', '{{ $buku->kategoris->implode('NamaKategori', ', ') }}')">
+                                                                    <i class="fa fa-plus"></i> Pinjam
+                                                                </button>
+                                                                @else
+                                                                <button type="button" class="btn btn-md border border-secondary rounded-pill px-3 text-primary m-1" disabled>
+                                                                    <i class="fa fa-check"></i> Dipinjam
+                                                                </button>
+                                                            @endif
+                                                            @if($isBorroweds)
+                                                            @if($userReview)
+                                                                <!-- If user has already provided a review -->
+                                                                <button type="button" class="btn btn-md border border-secondary rounded-pill px-3 text-primary m-1" onclick="editReview('{{ $buku->BukuID }}', '{{ $buku->Judul }}')">
+                                                                    <i class="far fa-comment"></i> Edit Ulasan
+                                                                </button>
+                                                            @else
+                                                                <!-- If user has not provided a review -->
+                                                                <button type="button" class="btn btn-md border border-secondary rounded-pill px-3 text-primary m-1" onclick="showReviewForm('{{ $buku->BukuID }}', '{{ $buku->Judul }}')">
+                                                                    <i class="far fa-comment"></i> Ulasan
+                                                                </button>
+                                                            @endif
+                                                            @endif                                    
                                                         </div>                                                        
                                                     </div>
                                                 </div>
@@ -222,19 +135,10 @@
                                     @endforeach
                                 </div>
                                 <div class="col-12">
-                                    <div class="pagination d-flex justify-content-center mt-5">
-                                        <a href="#" class="rounded">&laquo;</a>
-                                        <a href="#" class="active rounded">1</a>
-                                        <a href="#" class="rounded">2</a>
-                                        <a href="#" class="rounded">3</a>
-                                        <a href="#" class="rounded">4</a>
-                                        <a href="#" class="rounded">5</a>
-                                        <a href="#" class="rounded">6</a>
-                                        <a href="#" class="rounded">&raquo;</a>
-                                    </div>
-                                </div>      
-                            </div>   
-                              
+                                    {{ $bukus->links() }}
+                                </div>     
+                            </div>
+                             
                                 <!-- Modal for Borrow Confirmation -->
                                 <div class="modal fade" id="borrowConfirmationModal" tabindex="-1" aria-labelledby="borrowConfirmationModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -252,19 +156,91 @@
                                                     @csrf
                                                     <div class="mb-3">
                                                         <label for="tanggalPengembalian" class="form-label">Tanggal Pengembalian:</label>
-                                                        <input type="date" class="form-control" id="tanggalPengembalian" name="tanggalPengembalian" required min="{{ now()->format('Y-m-d') }}">
+                                                        <input type="date" class="form-control" id="tanggalPengembalian" name="tanggalPengembalian" required min="{{ now()->format('Y-m-d') }}" max="{{ now()->addWeeks(3)->format('Y-m-d') }}">
                                                     </div>                                                    
                                                     <input type="hidden" id="bukuID" name="bukuID">
                                                     <input type="hidden" id="userID" name="userID" value="{{ Auth::user()->id }}">
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Confirm Borrow</button>
+                                                        <button type="submit" class="btn btn-primary" id="confirmBorrowBtn">Confirm Borrow</button>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+
+                                        <!-- Modal for Review Form -->
+                                        <div class="modal fade" id="reviewFormModal" tabindex="-1" aria-labelledby="reviewFormModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="reviewFormModalLabel">Beri Ulasan</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="reviewForm" action="{{ route('review.store') }}" method="POST">
+                                                            @csrf
+                                                            <div class="mb-3">
+                                                                <label for="rating">Rating:</label>
+                                                                <div id="rating"></div>
+                                                                <input type="hidden" name="rating" id="rating_input">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ulasan">Ulasan:</label>
+                                                                <textarea class="form-control" id="ulasan" name="ulasan" rows="3"></textarea>
+                                                            </div>
+                                                            <input type="hidden" name="bukuID" id="bukuID_input">
+                                                            <input type="hidden" name="userID" id="userID_input" value="{{ Auth::user()->id }}">
+                                                            <button type="submit" class="btn btn-primary">Kirim Ulasan</button>
+                                                        </form>
+                                                        <hr>
+                                                        <h5>Ulasan Lainnya</h5>
+                                                        <ul id="otherReviewsList"></ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Modal for Edit Review Form -->
+                                        <div class="modal fade" id="editReviewFormModal" tabindex="-1" aria-labelledby="editReviewFormModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editReviewFormModalLabel">Edit Ulasan</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="editReviewForm" action="{{ route('review.update') }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="mb-3">
+                                                                <label for="editRating">Rating:</label>
+                                                                <div id="editRating"></div>
+                                                                <input type="hidden" name="rating" id="editRating_input">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="editUlasan">Ulasan:</label>
+                                                                <textarea class="form-control" id="editUlasan" name="ulasan" rows="3"></textarea>
+                                                            </div>
+                                                            <input type="hidden" name="bukuID" id="editBukuID_input">
+                                                            <input type="hidden" name="userID" id="editUserID_input" value="{{ Auth::user()->id }}">
+                                                            <button type="submit" class="btn btn-primary">Update Ulasan</button>
+                                                        </form>
+                                                        <hr>
+                                                        <h5>Ulasan Lainnya:</h5>
+                                                        <div id="otherReviews"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                
+
                         </div>
                     </div>
                 </div>
@@ -281,30 +257,39 @@
             }
         
             $(document).ready(function() {
-                $('#borrowForm').submit(function(e) {
-                    e.preventDefault();
-                    var form = $(this);
-                    var url = form.attr('action');
-                    var formData = form.serialize();
-                    
-                    $.ajax({
-                        type: 'POST',
-                        url: url,
-                        data: formData,
-                        success: function(response) {
-                            // Show success toast
-                            showToast('Buku berhasil dipinjam');
-                            // Reset the form
-                            form.trigger('reset');
-                            // Close the modal
-                            $('#borrowConfirmationModal').modal('hide');
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(xhr.responseText);
-                        }
-                    });
-                });
-            });
+    $('#borrowForm').submit(function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+        var formData = form.serialize();
+        
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            success: function(response) {
+                // Show success toast
+                showToast('Buku berhasil dipinjam');
+                // Reset the form
+                form.trigger('reset');
+                // Close the modal
+                $('#borrowConfirmationModal').modal('hide');
+                // Update the button state
+                $('#confirmBorrowBtn').attr('disabled', true).html('Dipinjam').addClass('disabled');
+
+                // Reload the page without changing the scroll position
+                var scrollPosition = window.scrollY || window.pageYOffset;
+                location.reload();
+                window.scrollTo(0, scrollPosition);
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+});
+
+
         
             // Function to show a custom toast notification
             function showToast(message) {
@@ -345,31 +330,21 @@
                 }, 100); // Delay the animation to ensure it starts properly
             }
 
-function toggleCollection(bukuID) {
-    // Check if the button has the 'btn-primary' class
-    var isInCollection = $('#collectionButton-' + bukuID).hasClass('btn-primary');
-
-    // Determine the action based on the current state
-    var action = isInCollection ? 'remove' : 'add';
-
+            function addToCollection(bukuID) {
     $.ajax({
         type: 'POST',
-        url: '{{ route('toggle-collection') }}',
+        url: '{{ route('add-to-collection') }}',
         data: {
             bukuID: bukuID,
-            action: action,
             _token: '{{ csrf_token() }}',
         },
         success: function(response) {
-            // Show success toast
-            showToast('Buku berhasil ' + (action === 'add' ? 'ditambahkan ke koleksi' : 'dihapus dari koleksi'));
-
-            // Toggle the button state
-            if (action === 'add') {
-                $('#collectionButton-' + bukuID).addClass('btn-primary').removeClass('btn-secondary').html('<i class="fa fa-star"></i> Koleksi');
-            } else {
-                $('#collectionButton-' + bukuID).removeClass('btn-primary').addClass('btn-secondary').html('<i class="fa fa-check"></i> Tambahkan ke Koleksi');
-            }
+            // Update button icon to 'fa-check'
+            $('#addToCollectionBtn_' + bukuID + ' .fa').removeClass('fa-star').addClass('fa-check');
+            // Change the onclick function to call removeFromCollection
+            $('#addToCollectionBtn_' + bukuID).attr('onclick', 'removeFromCollection(\'' + bukuID + '\')');
+            // Show success toast or update UI
+            showToast('Buku berhasil ditambahkan ke koleksi');
         },
         error: function(xhr, status, error) {
             // Handle errors
@@ -377,6 +352,30 @@ function toggleCollection(bukuID) {
         }
     });
 }
+
+function removeFromCollection(bukuID) {
+    $.ajax({
+        type: 'POST',
+        url: '{{ route('remove-from-collection') }}',
+        data: {
+            bukuID: bukuID,
+            _token: '{{ csrf_token() }}',
+        },
+        success: function(response) {
+            // Update button icon to 'fa-star'
+            $('#addToCollectionBtn_' + bukuID + ' .fa').removeClass('fa-check').addClass('fa-star');
+            // Change the onclick function to call addToCollection
+            $('#addToCollectionBtn_' + bukuID).attr('onclick', 'addToCollection(\'' + bukuID + '\')');
+            // Show success toast or update UI
+            showToast('Buku berhasil dihapus dari koleksi');
+        },
+        error: function(xhr, status, error) {
+            // Handle errors
+            console.error(xhr.responseText);
+        }
+    });
+}
+
 
 
 
@@ -418,6 +417,241 @@ function showToast(message) {
         }, 3000); // Display the toast for 3 seconds
     }, 100); // Delay the animation to ensure it starts properly
 }
+
+function showReviewForm(bukuID, judul) {
+    $('#bukuID_input').val(bukuID);
+    $('#reviewFormModal').modal('show');
+    $('#rating').rateYo({
+        rating: 0,
+        fullStar: true,
+        onChange: function (rating, rateYoInstance) {
+            $('#rating_input').val(rating);
+        }
+    });
+
+    // Fetch other users' reviews for the specified book
+    $.ajax({
+        type: 'GET',
+        url: '{{ route('review.other') }}',
+        data: {
+            bukuID: bukuID,
+        },
+        success: function(response) {
+            var otherReviews = response.otherReviews;
+            var reviewList = $('#otherReviewsList');
+            reviewList.empty(); // Clear existing reviews
+            if (otherReviews.length > 0) {
+                otherReviews.forEach(function(review) {
+                    var listItem = $('<li>').text('Rating: ' + review.Rating + ', Ulasan: ' + review.Ulasan);
+                    reviewList.append(listItem);
+                });
+            } else {
+                reviewList.append($('<li>').text('No other reviews available.'));
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+$(document).ready(function() {
+    $('#reviewForm').submit(function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+        var formData = form.serialize();
+        
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            success: function(response) {
+                // Close the modal
+                $('#reviewFormModal').modal('hide');
+                // Show success toast
+                showToast('Ulasan berhasil dikirim');
+                // Reset the form
+                form.trigger('reset');
+                // Reload the page without changing the scroll position
+                var scrollPosition = window.scrollY || window.pageYOffset;
+                location.reload();
+                window.scrollTo(0, scrollPosition);
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+});
+
+function editReview(bukuID, judul) {
+    // Fetch the user's existing review for the book via AJAX
+    $.ajax({
+        type: 'GET',
+        url: '{{ route('review.edit') }}',
+        data: {
+            bukuID: bukuID,
+            userID: '{{ Auth::user()->id }}',
+        },
+        success: function(response) {
+            // Populate the modal fields with the existing review data
+            $('#editRating').rateYo('rating', response.rating); // Populate rating
+            $('#editUlasan').val(response.ulasan); // Populate ulasan
+            $('#editBukuID_input').val(bukuID); // Set book ID
+            // Show the modal
+            $('#editReviewFormModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+$(document).ready(function() {
+    // Initialize RateYo for rating input
+    $("#editRating").rateYo({
+        rating: 0,
+        starWidth: "20px",
+        readOnly: false,
+        ratedFill: "#ffc929",
+        fullStar: true,
+        onChange: function (rating, rateYoInstance) {
+            $('#editRating_input').val(rating); // Set the value of the hidden input field
+        }
+    });
+
+    // Submit edit review form via AJAX
+    $('#editReviewForm').submit(function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+        var formData = form.serialize();
+
+        $.ajax({
+            type: 'PUT',
+            url: url,
+            data: formData,
+            success: function(response) {
+                // Show success toast
+                showToast('Ulasan berhasil diperbarui');
+                // Reset the form
+                form.trigger('reset');
+                // Close the modal
+                $('#editReviewFormModal').modal('hide');
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+});
+
+// Function to fetch other users' reviews
+function fetchOtherReviews(bukuID) {
+    $.ajax({
+        type: 'GET',
+        url: '{{ route('review.other') }}',
+        data: {
+            bukuID: bukuID
+        },
+        success: function(response) {
+            $('#otherReviews').empty(); // Clear existing content
+            if (response.otherReviews.length > 0) {
+                response.otherReviews.forEach(function(review) {
+                    var html = '<div class="mb-3">';
+                    html += '<p><strong>Rating:</strong> ' + review.rating + '</p>';
+                    html += '<p><strong>Ulasan:</strong> ' + review.ulasan + '</p>';
+                    html += '</div>';
+                    $('#otherReviews').append(html);
+                });
+            } else {
+                $('#otherReviews').html('<p>Tidak ada ulasan lain untuk buku ini.</p>');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+$('#editReviewFormModal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var bukuID = button.data('bukuid'); // Extract bukuID from data-* attributes
+
+    // Fetch other users' reviews
+    fetchOtherReviews(bukuID);
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchInput');
+
+    if (searchInput) { // Check if search input element exists
+        searchInput.addEventListener('input', function () {
+            const searchTerm = searchInput.value.toLowerCase();
+            const books = document.querySelectorAll('.col-md-6');
+
+            books.forEach(function (book) {
+                const titleElement = book.querySelector('h4');
+                if (titleElement) {
+                    const title = titleElement.textContent.toLowerCase();
+                    if (title.includes(searchTerm)) {
+                        book.style.display = 'block';
+                    } else {
+                        book.style.display = 'none';
+                    }
+                }
+            });
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const selectElement = document.getElementById('sort');
+
+    if (selectElement) {
+        selectElement.addEventListener('change', function () {
+            const selectedOption = selectElement.value;
+            const booksContainer = document.querySelector('.row.g-4');
+
+            // Get all book cards
+            const books = Array.from(booksContainer.children);
+
+            // Sort the book cards based on the selected option
+            switch (selectedOption) {
+                case 'title-asc':
+                    books.sort((a, b) => {
+                        const titleA = a.querySelector('h4').textContent.toLowerCase();
+                        const titleB = b.querySelector('h4').textContent.toLowerCase();
+                        return titleA.localeCompare(titleB);
+                    });
+                    break;
+                case 'title-desc':
+                    books.sort((a, b) => {
+                        const titleA = a.querySelector('h4').textContent.toLowerCase();
+                        const titleB = b.querySelector('h4').textContent.toLowerCase();
+                        return titleB.localeCompare(titleA);
+                    });
+                    break;
+                default:
+                    // No sorting needed for other options
+                    break;
+            }
+
+            // Remove existing book cards from the container
+            while (booksContainer.firstChild) {
+                booksContainer.removeChild(booksContainer.firstChild);
+            }
+
+            // Add sorted book cards back to the container
+            books.forEach(function (book) {
+                booksContainer.appendChild(book);
+            });
+        });
+    }
+});
+
 
         </script>
         
